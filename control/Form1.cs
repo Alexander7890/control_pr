@@ -16,6 +16,10 @@ namespace control
         private ColorDialog colorDialog1;
         private FontDialog fontDialog1;
         private Timer timer1;
+        private NotifyIcon notifyIcon1;
+        private TabControl tabControl1;
+        private PictureBox pictureBox1;
+        private Button buttonOpenFileDialog;
 
         public Form1()
         {
@@ -23,6 +27,24 @@ namespace control
             colorDialog1 = new ColorDialog();
             fontDialog1 = new FontDialog();
             timer1 = new Timer();
+
+            // Initialize PictureBox
+            pictureBox1 = new PictureBox();
+            pictureBox1.Size = new Size(300, 300);
+            pictureBox1.Location = new Point(400, 300);
+            this.Controls.Add(pictureBox1);
+
+            // Initialize Button
+            buttonOpenFileDialog = new Button();
+            buttonOpenFileDialog.Text = "Open Image";
+            buttonOpenFileDialog.Location = new Point(20, 230);
+            buttonOpenFileDialog.Click += new EventHandler(ButtonOpenFileDialog_Click);
+            this.Controls.Add(buttonOpenFileDialog);
+
+            // Initialize NotifyIcon
+            notifyIcon1 = new NotifyIcon();
+            notifyIcon1.Icon = SystemIcons.Application; // Установите подходящий значок для notifyIcon
+            notifyIcon1.Visible = true;
         }
 
         private void ButtonOpenFileDialog_Click(object sender, EventArgs e)
@@ -32,7 +54,6 @@ namespace control
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                PictureBox pictureBox1 = (PictureBox)this.Controls.OfType<PictureBox>().FirstOrDefault();
                 if (pictureBox1 != null)
                 {
                     pictureBox1.Image = Image.FromFile(openFileDialog1.FileName);
@@ -76,7 +97,7 @@ namespace control
             ListView lv1 = new ListView();
             lv1.Name = "lv1";
             lv1.Size = new Size(360, 160);
-            lv1.Location = new Point(50, 200);
+            lv1.Location = new Point(20, 300);
             lv1.View = View.Details;
             lv1.Columns.Add("тип элемента", 240);
             lv1.Columns.Add("имя элемента", 120);
@@ -89,6 +110,39 @@ namespace control
                 ListViewItem lvi1 = new ListViewItem(s2);
                 lv1.Items.Add(lvi1);
             }
+        }
+
+       
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+            ShowNotifyIconBalloon("Вы выбрали вкладку 1");
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+            ShowNotifyIconBalloon("Вы выбрали вкладку 2");
+        }
+
+        private void ShowNotifyIconBalloon(string message)
+        {
+            notifyIcon1.BalloonTipTitle = "Вкладка изменена";
+            notifyIcon1.BalloonTipText = message;
+            notifyIcon1.ShowBalloonTip(2000);
+        } 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void notifyIcon2_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
